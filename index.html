@@ -1,186 +1,602 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MAITRI — AI Companion in Space</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    body{
-      font-family:Inter,system-ui,sans-serif;
-      margin:0;
-      background:#ffffff;
-      color:#1a1a1a;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      overflow-x:hidden;
-    }
-    section{padding:56px 0}
-    .card{border:1px solid #e5e7eb;border-radius:12px;padding:20px;background:#fafafa;transition:transform .2s ease, box-shadow .2s ease;cursor:pointer}
-    .card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 6px 24px rgba(0,0,0,0.1)}
-    .btn{border-radius:8px;padding:12px 20px;font-weight:600;transition:background .2s ease, transform .2s ease}
-    .btn:hover{transform:translateY(-2px)}
-    .btn-primary{background:#2563eb;color:#fff}
-    .btn-primary:hover{background:#1d4ed8}
-    .btn-outline{border:1px solid #2563eb;color:#2563eb;background:#fff}
-    .btn-outline:hover{background:#f3f4f6}
-    footer{padding:28px 0;border-top:1px solid #e5e7eb;font-size:.9rem;color:#6b7280}
-    .icon{font-size:24px;color:#2563eb;margin-bottom:12px}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAITRI - AI Emotion Companion for Space Missions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --space-black: #0a0f1f;
+            --dark-indigo: #1b1f38;
+            --neon-blue: #4cc9f0;
+            --purple: #7209b7;
+            --white-glow: #f1f1f1;
+        }
+        
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background-color: var(--space-black);
+            color: var(--white-glow);
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .space-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(ellipse at center, var(--dark-indigo) 0%, var(--space-black) 70%);
+        }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 5s infinite;
+        }
+        
+        @keyframes twinkle {
+            0% { opacity: 0.2; }
+            50% { opacity: 1; }
+            100% { opacity: 0.2; }
+        }
+        
+        .glow {
+            box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue), 0 0 30px var(--neon-blue);
+        }
+        
+        .glow-purple {
+            box-shadow: 0 0 10px var(--purple), 0 0 20px var(--purple), 0 0 30px var(--purple);
+        }
+        
+        .section-card {
+            background: rgba(27, 31, 56, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(76, 201, 240, 0.3);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .section-card:hover {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px rgba(76, 201, 240, 0.5);
+        }
+        
+        .btn-space {
+            background: linear-gradient(45deg, var(--purple), var(--neon-blue));
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-space:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 201, 240, 0.4);
+        }
+        
+        .chat-container {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid rgba(76, 201, 240, 0.3);
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(10, 15, 31, 0.5);
+        }
+        
+        .chat-message {
+            margin: 8px 0;
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+        
+        .user-message {
+            background: linear-gradient(45deg, rgba(114, 9, 183, 0.3), rgba(76, 201, 240, 0.3));
+            margin-left: 20%;
+            text-align: right;
+            border: 1px solid rgba(76, 201, 240, 0.5);
+        }
+        
+        .bot-message {
+            background: rgba(27, 31, 56, 0.7);
+            margin-right: 20%;
+            border: 1px solid rgba(114, 9, 183, 0.5);
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translate(0, 0px); }
+            50% { transform: translate(0, -10px); }
+            100% { transform: translate(0, 0px); }
+        }
+        
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        .space-input {
+            background: rgba(10, 15, 31, 0.7);
+            border: 1px solid rgba(76, 201, 240, 0.5);
+            border-radius: 6px;
+            color: white;
+            padding: 10px;
+        }
+        
+        .space-input:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 10px rgba(76, 201, 240, 0.5);
+        }
+        
+        .hologram-effect {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hologram-effect::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(76, 201, 240, 0.1) 0%,
+                transparent 20%,
+                transparent 80%,
+                rgba(114, 9, 183, 0.1) 100%
+            );
+            transform: rotate(30deg);
+            animation: hologram 10s linear infinite;
+        }
+        
+        @keyframes hologram {
+            0% { transform: rotate(30deg) translateX(-10%); }
+            100% { transform: rotate(30deg) translateX(10%); }
+        }
+        
+        .orbit {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 1px solid rgba(76, 201, 240, 0.3);
+            animation: rotate 20s linear infinite;
+        }
+        
+        .satellite {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .mission-badge {
+            background: radial-gradient(circle, var(--dark-indigo) 0%, var(--space-black) 70%);
+            border: 2px solid var(--neon-blue);
+            border-radius: 50%;
+            padding: 20px;
+            width: 150px;
+            height: 150px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .mission-badge::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: 50%;
+            border: 1px solid var(--purple);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
 </head>
 <body>
+    <!-- Animated Starfield Background -->
+    <div class="space-bg" id="starfield"></div>
+    
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center relative py-20">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400 glow">
+                MAITRI
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+                Your AI Companion for Astronaut Emotional Well-Being in Deep Space Missions
+            </p>
+            <div class="flex flex-col md:flex-row gap-4 justify-center">
+                <button class="btn-space px-6 py-3 text-lg">Explore Solution</button>
+                <button class="btn-space px-6 py-3 text-lg">Watch Demo</button>
+            </div>
+            <div class="mt-12 floating">
+                <img src="https://cdn.pixabay.com/photo/2020/03/27/15/12/space-4974032_1280.png" alt="Astronaut" class="w-64 mx-auto">
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Section -->
+    <section class="py-20 parallax" style="background-image: url('https://cdn.pixabay.com/photo/2019/10/04/18/36/milky-way-4526277_1280.jpg');">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-12">The Challenge of Space Isolation</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="section-card p-6">
+                    <h3 class="text-2xl font-bold mb-4 text-cyan-400">The Problem</h3>
+                    <p class="mb-4">Astronauts on long-duration space missions face extreme psychological challenges:</p>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li>Extended isolation from Earth and loved ones</li>
+                        <li>Confinement in small spaces for months or years</li>
+                        <li>Communication delays with mission control</li>
+                        <li>High-stress environments with limited support</li>
+                    </ul>
+                </div>
+                <div class="section-card p-6">
+                    <h3 class="text-2xl font-bold mb-4 text-purple-400">Our Solution</h3>
+                    <p class="mb-4">MAITRI provides continuous emotional support through:</p>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li>Real-time emotion detection via multimodal AI</li>
+                        <li>Adaptive conversational support</li>
+                        <li>Psychological monitoring and intervention</li>
+                        <li>Offline functionality for deep space missions</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Emotion Analysis Interface -->
+    <section class="py-20">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <h2 class="text-4xl font-bold text-center mb-6">Emotion Analysis Interface</h2>
+            <p class="text-center mb-12 max-w-2xl mx-auto">Upload or capture emotional data through image and audio inputs for real-time analysis and support.</p>
+            
+            <!-- Input Form -->
+            <div class="section-card p-6 mb-8">
+                <h2 class="text-2xl font-semibold mb-4 text-cyan-400">Upload or Capture Emotion</h2>
+                <form id="emotionForm" enctype="multipart/form-data" class="space-y-6">
+                    <div>
+                        <label class="block text-lg font-medium mb-2">Visual Emotion Analysis</label>
+                        <input type="file" id="imageInput" name="file" accept="image/*" class="space-input mt-1 block w-full">
+                        <button type="button" id="webcamButton" class="btn-space mt-4 px-4 py-2">Use Webcam</button>
+                    </div>
+                    <div>
+                        <label class="block text-lg font-medium mb-2">Audio Emotion Analysis</label>
+                        <input type="file" id="audioInput" name="audio" accept="audio/*" class="space-input mt-1 block w-full">
+                        <button type="button" id="recordButton" class="btn-space mt-4 px-4 py-2">Record Audio</button>
+                    </div>
+                    <button type="submit" class="btn-space w-full py-3 text-lg mt-6">Analyze Emotions</button>
+                </form>
+            </div>
 
-  <!-- NAV -->
-  <nav class="container mx-auto px-6 py-6 flex items-center justify-between">
-    <div class="flex items-center gap-2">
-      <div class="text-xl font-bold text-blue-600">MAITRI</div>
-      <span class="text-sm text-gray-500">AI Companion in Space</span>
-    </div>
-    <div class="hidden md:flex gap-4 items-center text-sm text-gray-700">
-      <a href="#about" class="hover:text-blue-600">About</a>
-      <a href="#solution" class="hover:text-blue-600">Solution</a>
-      <a href="#architecture" class="hover:text-blue-600">System</a>
-      <a href="#demo" class="hover:text-blue-600">Demo</a>
-      <a href="#team" class="hover:text-blue-600">Team</a>
-      <button id="ctaTop" class="btn btn-primary ml-4">Watch Demo</button>
-    </div>
-  </nav>
+            <!-- Results Section -->
+            <div id="results" class="hidden section-card p-6 mb-8">
+                <h2 class="text-2xl font-semibold mb-4 text-purple-400">Emotion Analysis Results</h2>
+                <div id="imageResult" class="mb-6"></div>
+                <div id="audioResult" class="mb-6"></div>
+            </div>
 
-  <!-- HERO -->
-  <header class="container mx-auto px-6 grid md:grid-cols-2 gap-8 items-center">
-    <div>
-      <h1 class="text-4xl md:text-5xl font-bold leading-tight">MAITRI — Your AI Companion in Space</h1>
-      <p class="mt-4 text-gray-600 max-w-xl">Ensuring astronauts' emotional & physical well-being on long-duration missions with multimodal AI, offline reliability, and adaptive companionship.</p>
-      <div class="mt-6 flex gap-3">
-        <button id="exploreBtn" class="btn btn-outline">Explore Solution</button>
-        <button id="watchBtn" class="btn btn-primary">Watch Demo</button>
-      </div>
-    </div>
-    <div class="rounded-lg border bg-gray-50 p-8 text-center">
-      <video src="https://via.placeholder.com/400x250.mp4?text=Demo+Video" controls class="mx-auto rounded-md shadow"></video><img src="https://via.placeholder.com/400x250.png?text=Demo+Illustration" alt="Demo Illustration" class="mx-auto rounded-md shadow"/>
-    </div>
-  </header>
+            <!-- Chat Sections -->
+            <div id="chatSections" class="hidden space-y-8">
+                <!-- Image Chat -->
+                <div id="imageChatSection" class="hidden section-card p-6">
+                    <h2 class="text-2xl font-semibold mb-4 text-cyan-400">Visual Emotion Chat</h2>
+                    <div id="imageChat" class="chat-container mb-4"></div>
+                    <div class="flex">
+                        <input type="text" id="imageChatInput" class="space-input flex-1 rounded-l-lg rounded-r-none" placeholder="Type your message...">
+                        <button id="imageChatSend" class="btn-space px-4 py-2 rounded-r-lg rounded-l-none">Send</button>
+                    </div>
+                </div>
+                
+                <!-- Audio Chat -->
+                <div id="audioChatSection" class="hidden section-card p-6">
+                    <h2 class="text-2xl font-semibold mb-4 text-purple-400">Audio Emotion Chat</h2>
+                    <div id="audioChat" class="chat-container mb-4"></div>
+                    <div class="flex">
+                        <input type="text" id="audioChatInput" class="space-input flex-1 rounded-l-lg rounded-r-none" placeholder="Type your message...">
+                        <button id="audioChatSend" class="btn-space px-4 py-2 rounded-r-lg rounded-l-none">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- System Architecture -->
+    <section class="py-20 parallax" style="background-image: url('https://cdn.pixabay.com/photo/2016/10/20/18/35/earth-1756274_1280.jpg');">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-12">System Architecture</h2>
+            <div class="flex justify-center mb-12">
+                <div class="orbit">
+                    <div class="satellite"></div>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="section-card p-4 text-center">
+                    <div class="text-4xl mb-2">🎙️</div>
+                    <h3 class="text-xl font-bold mb-2">Audio Input</h3>
+                    <p>Voice analysis for emotional state detection</p>
+                </div>
+                <div class="section-card p-4 text-center">
+                    <div class="text-4xl mb-2">🎥</div>
+                    <h3 class="text-xl font-bold mb-2">Visual Input</h3>
+                    <p>Facial expression and body language analysis</p>
+                </div>
+                <div class="section-card p-4 text-center">
+                    <div class="text-4xl mb-2">🤖</div>
+                    <h3 class="text-xl font-bold mb-2">AI Engine</h3>
+                    <p>Multimodal emotion recognition and response</p>
+                </div>
+                <div class="section-card p-4 text-center">
+                    <div class="text-4xl mb-2">📊</div>
+                    <h3 class="text-xl font-bold mb-2">Dashboard</h3>
+                    <p>Real-time monitoring and intervention alerts</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-12">Key Features</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="section-card p-6 text-center hover:glow transition-all duration-300">
+                    <div class="mission-badge mx-auto mb-4">
+                        <span class="text-3xl">🔍</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Multimodal AI</h3>
+                    <p>Combines visual, audio, and biometric data for accurate emotion detection</p>
+                </div>
+                <div class="section-card p-6 text-center hover:glow transition-all duration-300">
+                    <div class="mission-badge mx-auto mb-4">
+                        <span class="text-3xl">💬</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Adaptive Conversations</h3>
+                    <p>Personalized dialogue based on emotional state and mission context</p>
+                </div>
+                <div class="section-card p-6 text-center hover:glow transition-all duration-300">
+                    <div class="mission-badge mx-auto mb-4">
+                        <span class="text-3xl">📡</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Offline Deployment</h3>
+                    <p>Functions without Earth connection during deep space missions</p>
+                </div>
+                <div class="section-card p-6 text-center hover:glow transition-all duration-300">
+                    <div class="mission-badge mx-auto mb-4">
+                        <span class="text-3xl">⚠️</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Critical Alerts</h3>
+                    <p>Immediate notification system for psychological emergencies</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-12 border-t border-cyan-800">
+        <div class="container mx-auto px-4 text-center">
+            <h3 class="text-2xl font-bold mb-4">MAITRI</h3>
+            <p class="mb-6">Guiding Astronauts Beyond Earth</p>
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="#" class="text-2xl hover:text-cyan-400 transition-colors">🔗</a>
+                <a href="#" class="text-2xl hover:text-cyan-400 transition-colors">💼</a>
+                <a href="#" class="text-2xl hover:text-cyan-400 transition-colors">📧</a>
+            </div>
+            <p class="text-sm text-gray-400">© 2023 MAITRI - Space-Tech Emotional Support System</p>
+        </div>
+    </footer>
 
-  <!-- ABOUT -->
-  <section id="about" class="container mx-auto px-6 grid md:grid-cols-2 gap-8 items-center">
-    <div class="card text-center">
-      <i class="fas fa-user-astronaut icon"></i>
-      <h3 class="text-2xl font-semibold">Problem — Isolation & Stress</h3>
-      <p class="mt-3 text-gray-600">Long missions increase psychological strain, fatigue, and social isolation. MAITRI provides continuous, adaptive emotional support and monitoring even when connectivity is limited.</p>
-    </div>
-    <div class="card text-center">
-      <i class="fas fa-robot icon"></i>
-      <h3 class="text-2xl font-semibold">MAITRI Interface</h3>
-      <p class="mt-3 text-gray-600">Multimodal sensing (audio, image, vitals), on-device AI, conversational agent, and alerts dashboard for crew and mission control.</p>
-      <div class="mt-4 grid grid-cols-2 gap-3 text-sm">
-        <div class="card"><i class="fas fa-smile icon"></i>Emotion Detection</div>
-        <div class="card"><i class="fas fa-brain icon"></i>Psychological Support</div>
-        <div class="card"><i class="fas fa-wifi-slash icon"></i>Offline AI</div>
-        <div class="card"><i class="fas fa-bell icon"></i>Critical Alerts</div>
-      </div>
-    </div>
-  </section>
+    <script>
+        // Create animated starfield
+        function createStarfield() {
+            const starfield = document.getElementById('starfield');
+            const starCount = 150;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // Random size between 1-3px
+                const size = Math.random() * 2 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                // Random position
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                
+                // Random animation delay
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                
+                starfield.appendChild(star);
+            }
+        }
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            createStarfield();
+            
+            // Add floating animation to section cards on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('floating');
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.section-card').forEach(card => {
+                observer.observe(card);
+            });
+        });
+        
+        // Existing emotion analysis functionality (simplified for demo)
+        let currentImageEmotion = null;
+        let currentAudioEmotion = null;
 
-  <!-- SOLUTION / ARCHITECTURE -->
-  <section id="solution" class="container mx-auto px-6">
-    <h2 class="text-3xl font-semibold mb-6 text-center">Proposed Solution</h2>
-    <div class="grid md:grid-cols-3 gap-4 text-center">
-      <div class="card"><i class="fas fa-eye icon"></i><h4 class="font-semibold">Emotion Detection</h4><p class="text-gray-600 text-sm mt-2">Computer vision + audio analysis to infer emotional state and sentiment trends.</p></div>
-      <div class="card"><i class="fas fa-heart icon"></i><h4 class="font-semibold">Psychological Support</h4><p class="text-gray-600 text-sm mt-2">Adaptive conversation flows, cognitive-behavioral micro-interventions, and calming exercises.</p></div>
-      <div class="card"><i class="fas fa-microchip icon"></i><h4 class="font-semibold">Offline Reliability</h4><p class="text-gray-600 text-sm mt-2">On-device models and sync strategies for intermittent connectivity.</p></div>
-    </div>
+        document.getElementById('emotionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Simulate API call with demo data
+            setTimeout(() => {
+                const demoData = {
+                    image_emotion: "Calm",
+                    image_static_response: "The analysis indicates a calm emotional state. This is optimal for mission tasks requiring focus.",
+                    image_chat_response: "I detect a calm emotional state. How can I assist you today?",
+                    audio_emotion: "Slightly Stressed",
+                    audio_static_response: "Vocal analysis suggests mild stress. Would you like to discuss what's on your mind?",
+                    audio_chat_response: "I notice some stress in your voice. Remember the breathing techniques we practiced?"
+                };
+                
+                displayResults(demoData);
+            }, 1000);
+        });
 
-    <div id="architecture" class="mt-8 card text-center">
-      <i class="fas fa-project-diagram icon"></i>
-      <h3 class="text-xl font-semibold">System Architecture</h3>
-      <p class="mt-4 text-gray-600">Diagram of inputs, AI engine, dashboard, and alerts here.</p>
-    </div>
-  </section>
+        function displayResults(data) {
+            const resultsDiv = document.getElementById('results');
+            const imageResult = document.getElementById('imageResult');
+            const audioResult = document.getElementById('audioResult');
+            const chatSections = document.getElementById('chatSections');
+            const imageChatSection = document.getElementById('imageChatSection');
+            const audioChatSection = document.getElementById('audioChatSection');
+            const imageChat = document.getElementById('imageChat');
+            const audioChat = document.getElementById('audioChat');
 
-  <!-- FEATURES -->
-  <section class="container mx-auto px-6">
-    <h2 class="text-3xl font-semibold mb-6 text-center">Features</h2>
-    <div class="grid md:grid-cols-4 gap-4 text-center">
-      <div class="card"><i class="fas fa-brain icon"></i>Multimodal AI</div>
-      <div class="card"><i class="fas fa-comments icon"></i>Adaptive Conversations</div>
-      <div class="card"><i class="fas fa-satellite-dish icon"></i>On-device & Offline</div>
-      <div class="card"><i class="fas fa-exclamation-triangle icon"></i>Critical Alerting</div>
-    </div>
-  </section>
+            resultsDiv.classList.remove('hidden');
+            chatSections.classList.remove('hidden');
+            imageChat.innerHTML = '';
+            audioChat.innerHTML = '';
 
-  <!-- COMPARISON -->
-  <section class="container mx-auto px-6 mt-8">
-    <h2 class="text-3xl font-semibold mb-6 text-center">Comparison</h2>
-    <div class="grid md:grid-cols-2 gap-6">
-      <div class="card"><h4 class="font-semibold">Existing</h4><ul class="mt-3 text-gray-600 list-disc ml-5"><li>Limited offline support</li><li>Reactive alerts</li><li>Low personalization</li></ul></div>
-      <div class="card"><h4 class="font-semibold">MAITRI</h4><ul class="mt-3 text-gray-800 list-disc ml-5"><li>On-device adaptive AI</li><li>Proactive wellbeing interventions</li><li>High personalization</li></ul></div>
-    </div>
-  </section>
+            // Image result
+            if (data.image_emotion) {
+                currentImageEmotion = data.image_emotion;
+                imageResult.innerHTML = `
+                    <h3 class="text-lg font-medium text-cyan-400">Visual Emotion: ${data.image_emotion}</h3>
+                    <p>${data.image_static_response}</p>
+                `;
+                imageChatSection.classList.remove('hidden');
+                appendChatMessage(imageChat, data.image_chat_response, 'bot');
+            } else {
+                imageResult.innerHTML = '<p>No visual emotion detected.</p>';
+                imageChatSection.classList.add('hidden');
+            }
 
-  <!-- DEMO -->
-  <section id="demo" class="container mx-auto px-6 mt-8">
-    <h2 class="text-3xl font-semibold mb-6 text-center">Demo & Emotion Input</h2>
-    <div class="grid md:grid-cols-2 gap-6">
-      <div class="card">
-        <h3 class="font-semibold">Upload / Capture</h3>
-        <form id="emotionForm" class="space-y-4 mt-4">
-          <div>
-            <label class="text-sm text-gray-600">Image Input</label>
-            <input type="file" accept="image/*" class="w-full mt-2 border p-2 rounded-md" />
-          </div>
-          <div>
-            <label class="text-sm text-gray-600">Audio Input</label>
-            <input type="file" accept="audio/*" class="w-full mt-2 border p-2 rounded-md" />
-          </div>
-          <button type="submit" class="btn btn-primary mt-2">Analyze Emotions</button>
-        </form>
-      </div>
-      <div class="card text-center">
-        <img src="https://via.placeholder.com/350x200.png?text=Analysis+Results" alt="Results" class="mx-auto rounded-md"/>
-      </div>
-    </div>
-  </section>
+            // Audio result
+            if (data.audio_emotion) {
+                currentAudioEmotion = data.audio_emotion;
+                audioResult.innerHTML = `
+                    <h3 class="text-lg font-medium text-purple-400">Audio Emotion: ${data.audio_emotion}</h3>
+                    <p>${data.audio_static_response}</p>
+                `;
+                audioChatSection.classList.remove('hidden');
+                appendChatMessage(audioChat, data.audio_chat_response, 'bot');
+            } else {
+                audioResult.innerHTML = '<p>No audio emotion detected.</p>';
+                audioChatSection.classList.add('hidden');
+            }
+        }
 
-  <!-- TEAM -->
-  <section id="team" class="container mx-auto px-6 mt-8">
-    <h2 class="text-3xl font-semibold mb-6 text-center">Team</h2>
-    <div class="grid md:grid-cols-4 gap-4 text-center">
-      <div class="card"><img src="https://via.placeholder.com/80" alt="Ayush Thakur" class="mx-auto rounded-full mb-3"/><div class="font-semibold">Ayush Thakur</div><div class="text-sm text-gray-500">Frontend & UX</div></div>
-      <div class="card"><img src="https://via.placeholder.com/80" alt="Research Lead" class="mx-auto rounded-full mb-3"/><div class="font-semibold">Research Lead</div><div class="text-sm text-gray-500">ML & Psychology</div></div>
-      <div class="card"><img src="https://via.placeholder.com/80" alt="Systems Eng" class="mx-auto rounded-full mb-3"/><div class="font-semibold">Systems Eng</div><div class="text-sm text-gray-500">On-device Systems</div></div>
-      <div class="card"><img src="https://via.placeholder.com/80" alt="Mission Ops" class="mx-auto rounded-full mb-3"/><div class="font-semibold">Mission Ops</div><div class="text-sm text-gray-500">Flight Ops</div></div>
-    </div>
-  </section>
+        function appendChatMessage(chatContainer, message, type) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${type === 'user' ? 'user-message' : 'bot-message'}`;
+            messageDiv.textContent = message;
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
 
-  <!-- CONTACT -->
-  <section class="container mx-auto px-6 mt-8">
-    <h2 class="text-2xl font-semibold mb-4 text-center">Contact</h2>
-    <div class="card">
-      <form id="contactForm" class="grid md:grid-cols-2 gap-4">
-        <input placeholder="Name" class="border p-2 rounded-md" />
-        <input placeholder="Email" class="border p-2 rounded-md" />
-        <textarea placeholder="Message" class="border p-2 rounded-md md:col-span-2"></textarea>
-        <button class="btn btn-primary md:col-span-2">Launch Message 🚀</button>
-      </form>
-    </div>
-  </section>
+        async function sendChatMessage(emotion, message, chatContainer, type) {
+            if (!message.trim()) return;
+            appendChatMessage(chatContainer, message, 'user');
+            
+            // Simulate API response
+            setTimeout(() => {
+                const responses = {
+                    "Calm": "Maintaining calm is excellent for mission focus. Is there anything specific you'd like to discuss?",
+                    "Slightly Stressed": "I notice some stress. Remember the mindfulness exercises we practiced? They might help right now.",
+                    "Happy": "It's great to detect positive emotions! Celebrating small victories is important in space missions.",
+                    "Neutral": "A neutral emotional state is perfectly normal. How are you finding the current mission phase?"
+                };
+                
+                const response = responses[emotion] || "I'm here to support you. Would you like to talk more about how you're feeling?";
+                appendChatMessage(chatContainer, response, 'bot');
+            }, 1000);
+        }
 
-  <footer class="container mx-auto px-6 mt-8">
-    <div class="flex items-center justify-between">
-      <div>MAITRI — Guiding Astronauts Beyond Earth</div>
-      <div class="flex gap-3 text-xl">
-        <a class="hover:text-blue-600"><i class="fab fa-linkedin"></i></a>
-        <a class="hover:text-blue-600"><i class="fab fa-github"></i></a>
-        <a class="hover:text-blue-600"><i class="fas fa-envelope"></i></a>
-      </div>
-    </div>
-  </footer>
+        document.getElementById('imageChatSend').addEventListener('click', () => {
+            const input = document.getElementById('imageChatInput');
+            const message = input.value;
+            if (currentImageEmotion) {
+                sendChatMessage(currentImageEmotion, message, document.getElementById('imageChat'), 'image');
+                input.value = '';
+            }
+        });
 
-  <script>
-    gsap.from(".card", {opacity:0, y:20, duration:0.6, stagger:0.1});
-  </script>
+        document.getElementById('audioChatSend').addEventListener('click', () => {
+            const input = document.getElementById('audioChatInput');
+            const message = input.value;
+            if (currentAudioEmotion) {
+                sendChatMessage(currentAudioEmotion, message, document.getElementById('audioChat'), 'audio');
+                input.value = '';
+            }
+        });
+
+        document.getElementById('imageChatInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') document.getElementById('imageChatSend').click();
+        });
+        
+        document.getElementById('audioChatInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') document.getElementById('audioChatSend').click();
+        });
+
+        // Webcam and record button functionality (placeholder)
+        document.getElementById('webcamButton').addEventListener('click', function() {
+            alert("Webcam functionality would be implemented here in a production environment");
+        });
+        
+        document.getElementById('recordButton').addEventListener('click', function() {
+            alert("Audio recording functionality would be implemented here in a production environment");
+        });
+    </script>
 </body>
 </html>
