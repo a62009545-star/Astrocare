@@ -3,589 +3,507 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Emotion Companion</title>
+    <title>MAITRI - AI Emotion Companion for Space Missions</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #4f46e5;
-            --primary-dark: #4338ca;
-            --secondary: #10b981;
-            --secondary-dark: #0d9c6a;
-            --accent: #f59e0b;
-            --light: #f8fafc;
-            --dark: #1e293b;
-            --gray: #64748b;
-            --gray-light: #e2e8f0;
+            --space-black: #0a0f1f;
+            --dark-indigo: #1b1f38;
+            --neon-blue: #4cc9f0;
+            --purple: #7209b7;
+            --white-glow: #f1f1f1;
         }
         
         body {
-            background: linear-gradient(135deg, #f0f4ff 0%, #f8fafc 100%);
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Exo 2', sans-serif;
+            background-color: var(--space-black);
+            color: var(--white-glow);
+            overflow-x: hidden;
         }
         
-        .card {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Orbitron', sans-serif;
         }
         
-        .card:hover {
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-            transform: translateY(-2px);
-        }
-        
-        .btn-primary {
-            background: linear-gradient(to right, var(--primary), var(--primary-dark));
-            color: white;
-            border: none;
-            border-radius: 10px;
-            padding: 12px 24px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.3);
-        }
-        
-        .btn-secondary {
-            background: linear-gradient(to right, var(--secondary), var(--secondary-dark));
-            color: white;
-            border: none;
-            border-radius: 10px;
-            padding: 12px 24px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .btn-secondary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
-        }
-        
-        .btn-outline {
-            background: transparent;
-            color: var(--primary);
-            border: 2px solid var(--primary);
-            border-radius: 10px;
-            padding: 10px 22px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .btn-outline:hover {
-            background: var(--primary);
-            color: white;
-        }
-        
-        .input-field {
-            border: 2px solid var(--gray-light);
-            border-radius: 10px;
-            padding: 12px 16px;
-            transition: all 0.3s ease;
+        .space-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(ellipse at center, var(--dark-indigo) 0%, var(--space-black) 70%);
         }
         
-        .input-field:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 5s infinite;
+        }
+        
+        @keyframes twinkle {
+            0% { opacity: 0.2; }
+            50% { opacity: 1; }
+            100% { opacity: 0.2; }
+        }
+        
+        .glow {
+            box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue), 0 0 30px var(--neon-blue);
+        }
+        
+        .glow-purple {
+            box-shadow: 0 0 10px var(--purple), 0 0 20px var(--purple), 0 0 30px var(--purple);
+        }
+        
+        .section-card {
+            background: rgba(27, 31, 56, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(76, 201, 240, 0.3);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .section-card:hover {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px rgba(76, 201, 240, 0.5);
+        }
+        
+        .btn-space {
+            background: linear-gradient(45deg, var(--purple), var(--neon-blue));
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-space:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 201, 240, 0.4);
         }
         
         .chat-container {
             max-height: 300px;
             overflow-y: auto;
-            border-radius: 12px;
-            padding: 16px;
-            background: #f8fafc;
+            border: 1px solid rgba(76, 201, 240, 0.3);
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(10, 15, 31, 0.5);
         }
         
         .chat-message {
-            margin: 12px 0;
-            padding: 12px 16px;
-            border-radius: 12px;
-            max-width: 80%;
-            animation: fadeIn 0.3s ease;
+            margin: 8px 0;
+            padding: 8px 12px;
+            border-radius: 8px;
         }
         
         .user-message {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            margin-left: auto;
-            border-bottom-right-radius: 4px;
+            background: linear-gradient(45deg, rgba(114, 9, 183, 0.3), rgba(76, 201, 240, 0.3));
+            margin-left: 20%;
+            text-align: right;
+            border: 1px solid rgba(76, 201, 240, 0.5);
         }
         
         .bot-message {
-            background: white;
-            color: var(--dark);
-            margin-right: auto;
-            border-bottom-left-radius: 4px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            background: rgba(27, 31, 56, 0.7);
+            margin-right: 20%;
+            border: 1px solid rgba(114, 9, 183, 0.5);
         }
         
-        .emotion-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: var(--light);
-            color: var(--dark);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 14px;
+        .floating {
+            animation: floating 3s ease-in-out infinite;
         }
         
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        @keyframes floating {
+            0% { transform: translate(0, 0px); }
+            50% { transform: translate(0, -10px); }
+            100% { transform: translate(0, 0px); }
         }
         
-        .section-title i {
-            color: var(--primary);
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
         }
         
-        .file-input-wrapper {
+        .space-input {
+            background: rgba(10, 15, 31, 0.7);
+            border: 1px solid rgba(76, 201, 240, 0.5);
+            border-radius: 6px;
+            color: white;
+            padding: 10px;
+        }
+        
+        .space-input:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 10px rgba(76, 201, 240, 0.5);
+        }
+        
+        .hologram-effect {
             position: relative;
             overflow: hidden;
-            display: inline-block;
-            width: 100%;
         }
         
-        .file-input-wrapper input[type=file] {
+        .hologram-effect::before {
+            content: '';
             position: absolute;
-            left: 0;
-            top: 0;
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(76, 201, 240, 0.1) 0%,
+                transparent 20%,
+                transparent 80%,
+                rgba(114, 9, 183, 0.1) 100%
+            );
+            transform: rotate(30deg);
+            animation: hologram 10s linear infinite;
         }
         
-        .file-input-label {
+        @keyframes hologram {
+            0% { transform: rotate(30deg) translateX(-10%); }
+            100% { transform: rotate(30deg) translateX(10%); }
+        }
+        
+        .orbit {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 1px solid rgba(76, 201, 240, 0.3);
+            animation: rotate 20s linear infinite;
+        }
+        
+        .satellite {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .mission-badge {
+            background: radial-gradient(circle, var(--dark-indigo) 0%, var(--space-black) 70%);
+            border: 2px solid var(--neon-blue);
+            border-radius: 50%;
+            padding: 20px;
+            width: 150px;
+            height: 150px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            padding: 16px;
-            background: var(--light);
-            border: 2px dashed var(--gray-light);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
+            position: relative;
         }
         
-        .file-input-label:hover {
-            border-color: var(--primary);
-            background: rgba(79, 70, 229, 0.05);
-        }
-        
-        .file-input-label i {
-            font-size: 24px;
-            color: var(--primary);
-        }
-        
-        .tab-button {
-            padding: 12px 24px;
-            background: transparent;
-            border: none;
-            border-bottom: 3px solid transparent;
-            font-weight: 600;
-            color: var(--gray);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .tab-button.active {
-            color: var(--primary);
-            border-bottom-color: var(--primary);
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .pulse {
+        .mission-badge::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: 50%;
+            border: 1px solid var(--purple);
             animation: pulse 2s infinite;
         }
         
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        
-        .loading-dots {
-            display: inline-block;
-            position: relative;
-            width: 80px;
-            height: 20px;
-        }
-        
-        .loading-dots div {
-            position: absolute;
-            top: 8px;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--primary);
-            animation-timing-function: cubic-bezier(0, 1, 1, 0);
-        }
-        
-        .loading-dots div:nth-child(1) {
-            left: 8px;
-            animation: loading-dots1 0.6s infinite;
-        }
-        
-        .loading-dots div:nth-child(2) {
-            left: 8px;
-            animation: loading-dots2 0.6s infinite;
-        }
-        
-        .loading-dots div:nth-child(3) {
-            left: 32px;
-            animation: loading-dots2 0.6s infinite;
-        }
-        
-        .loading-dots div:nth-child(4) {
-            left: 56px;
-            animation: loading-dots3 0.6s infinite;
-        }
-        
-        @keyframes loading-dots1 {
-            0% { transform: scale(0); }
-            100% { transform: scale(1); }
-        }
-        
-        @keyframes loading-dots3 {
-            0% { transform: scale(1); }
-            100% { transform: scale(0); }
-        }
-        
-        @keyframes loading-dots2 {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(24px, 0); }
-        }
-        
-        /* Scrollbar styling */
-        .chat-container::-webkit-scrollbar {
-            width: 6px;
-        }
-        
-        .chat-container::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-        
-        .chat-container::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 10px;
-        }
-        
-        .chat-container::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-dark);
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
         }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
-    <div class="container mx-auto max-w-6xl">
-        <!-- Header -->
-        <div class="text-center mb-10">
-            <h1 class="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-3">AI Emotion Companion</h1>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto">Understand and explore your emotions through AI-powered analysis of images and audio</p>
-        </div>
-        
-        <!-- Main Content Tabs -->
-        <div class="flex border-b border-gray-200 mb-8">
-            <button id="inputTab" class="tab-button active">
-                <i class="fas fa-upload mr-2"></i>Input Emotions
-            </button>
-            <button id="resultsTab" class="tab-button">
-                <i class="fas fa-chart-bar mr-2"></i>Analysis Results
-            </button>
-            <button id="chatTab" class="tab-button">
-                <i class="fas fa-comments mr-2"></i>Emotion Chat
-            </button>
-        </div>
-        
-        <!-- Input Form Section -->
-        <div id="inputSection" class="card p-8 mb-8">
-            <h2 class="section-title">
-                <i class="fas fa-cloud-upload-alt"></i>Upload or Capture Emotion
-            </h2>
-            
-            <form id="emotionForm" enctype="multipart/form-data" class="space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Image Input -->
-                    <div class="card p-6">
-                        <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
-                            <i class="fas fa-image text-indigo-500"></i> Visual Emotion Analysis
-                        </h3>
-                        
-                        <div class="file-input-wrapper mb-4">
-                            <div class="file-input-label">
-                                <i class="fas fa-file-image"></i>
-                                <div>
-                                    <div class="font-medium">Upload an image</div>
-                                    <div class="text-sm text-gray-500">JPEG, PNG, or WebP format</div>
-                                </div>
-                            </div>
-                            <input type="file" id="imageInput" name="file" accept="image/*">
-                        </div>
-                        
-                        <div class="text-center text-gray-500 my-3">or</div>
-                        
-                        <button type="button" id="webcamButton" class="btn-outline w-full">
-                            <i class="fas fa-camera"></i> Use Webcam
-                        </button>
-                    </div>
-                    
-                    <!-- Audio Input -->
-                    <div class="card p-6">
-                        <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
-                            <i class="fas fa-microphone text-green-500"></i> Audio Emotion Analysis
-                        </h3>
-                        
-                        <div class="file-input-wrapper mb-4">
-                            <div class="file-input-label">
-                                <i class="fas fa-file-audio"></i>
-                                <div>
-                                    <div class="font-medium">Upload an audio file</div>
-                                    <div class="text-sm text-gray-500">MP3, WAV, or OGG format</div>
-                                </div>
-                            </div>
-                            <input type="file" id="audioInput" name="audio" accept="audio/*">
-                        </div>
-                        
-                        <div class="text-center text-gray-500 my-3">or</div>
-                        
-                        <button type="button" id="recordButton" class="btn-outline w-full">
-                            <i class="fas fa-microphone-alt"></i> Record Audio
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="flex justify-center pt-4">
-                    <button type="submit" class="btn-primary pulse">
-                        <i class="fas fa-brain"></i> Analyze Emotions
-                    </button>
-                </div>
-            </form>
-        </div>
-        
-        <!-- Results Section -->
-        <div id="resultsSection" class="card p-8 mb-8 hidden">
-            <h2 class="section-title">
-                <i class="fas fa-chart-pie"></i> Emotion Analysis Results
-            </h2>
-            
-            <div id="results" class="hidden">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Image Results -->
-                    <div id="imageResultContainer" class="card p-6">
-                        <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
-                            <i class="fas fa-image text-indigo-500"></i> Visual Emotion
-                        </h3>
-                        <div id="imageResult" class="space-y-4">
-                            <!-- Results will be inserted here -->
-                        </div>
-                    </div>
-                    
-                    <!-- Audio Results -->
-                    <div id="audioResultContainer" class="card p-6">
-                        <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
-                            <i class="fas fa-microphone text-green-500"></i> Audio Emotion
-                        </h3>
-                        <div id="audioResult" class="space-y-4">
-                            <!-- Results will be inserted here -->
-                        </div>
-                    </div>
-                </div>
+<body>
+    <!-- Animated Starfield Background -->
+    <div class="space-bg" id="starfield"></div>
+    
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center relative py-20">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400 glow">
+                MAITRI
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+                Your AI Companion for Astronaut Emotional Well-Being in Deep Space Missions
+            </p>
+            <div class="flex flex-col md:flex-row gap-4 justify-center">
+                <button class="btn-space px-6 py-3 text-lg">Explore Solution</button>
+                <button class="btn-space px-6 py-3 text-lg">Watch Demo</button>
             </div>
-            
-            <div id="noResults" class="text-center py-10">
-                <i class="fas fa-chart-bar text-5xl text-gray-300 mb-4"></i>
-                <h3 class="text-xl font-semibold text-gray-500">No Analysis Results Yet</h3>
-                <p class="text-gray-500 mt-2">Upload an image or audio file to see emotion analysis results</p>
+            <div class="mt-12 floating">
+                <img src="https://cdn.pixabay.com/photo/2020/03/27/15/12/space-4974032_1280.png" alt="Astronaut" class="w-64 mx-auto">
             </div>
         </div>
-        
-        <!-- Chat Sections -->
-        <div id="chatSection" class="hidden">
+    </section>
+    
+    <!-- About Section -->
+    <section class="py-20 parallax" style="background-image: url('https://cdn.pixabay.com/photo/2019/10/04/18/36/milky-way-4526277_1280.jpg');">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-12">The Challenge of Space Isolation</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="section-card p-6">
+                    <h3 class="text-2xl font-bold mb-4 text-cyan-400">The Problem</h3>
+                    <p class="mb-4">Astronauts on long-duration space missions face extreme psychological challenges:</p>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li>Extended isolation from Earth and loved ones</li>
+                        <li>Confinement in small spaces for months or years</li>
+                        <li>Communication delays with mission control</li>
+                        <li>High-stress environments with limited support</li>
+                    </ul>
+                </div>
+                <div class="section-card p-6">
+                    <h3 class="text-2xl font-bold mb-4 text-purple-400">Our Solution</h3>
+                    <p class="mb-4">MAITRI provides continuous emotional support through:</p>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li>Real-time emotion detection via multimodal AI</li>
+                        <li>Adaptive conversational support</li>
+                        <li>Psychological monitoring and intervention</li>
+                        <li>Offline functionality for deep space missions</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Emotion Analysis Interface -->
+    <section class="py-20">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <h2 class="text-4xl font-bold text-center mb-6">Emotion Analysis Interface</h2>
+            <p class="text-center mb-12 max-w-2xl mx-auto">Upload or capture emotional data through image and audio inputs for real-time analysis and support.</p>
+            
+            <!-- Input Form -->
+            <div class="section-card p-6 mb-8">
+                <h2 class="text-2xl font-semibold mb-4 text-cyan-400">Upload or Capture Emotion</h2>
+                <form id="emotionForm" enctype="multipart/form-data" class="space-y-6">
+                    <div>
+                        <label class="block text-lg font-medium mb-2">Visual Emotion Analysis</label>
+                        <input type="file" id="imageInput" name="file" accept="image/*" class="space-input mt-1 block w-full">
+                        <button type="button" id="webcamButton" class="btn-space mt-4 px-4 py-2">Use Webcam</button>
+                    </div>
+                    <div>
+                        <label class="block text-lg font-medium mb-2">Audio Emotion Analysis</label>
+                        <input type="file" id="audioInput" name="audio" accept="audio/*" class="space-input mt-1 block w-full">
+                        <button type="button" id="recordButton" class="btn-space mt-4 px-4 py-2">Record Audio</button>
+                    </div>
+                    <button type="submit" class="btn-space w-full py-3 text-lg mt-6">Analyze Emotions</button>
+                </form>
+            </div>
+
+            <!-- Results Section -->
+            <div id="results" class="hidden section-card p-6 mb-8">
+                <h2 class="text-2xl font-semibold mb-4 text-purple-400">Emotion Analysis Results</h2>
+                <div id="imageResult" class="mb-6"></div>
+                <div id="audioResult" class="mb-6"></div>
+            </div>
+
+            <!-- Chat Sections -->
+            <div id="chatSections" class="hidden space-y-8">
                 <!-- Image Chat -->
-                <div id="imageChatSection" class="card p-6 hidden">
-                    <h2 class="section-title">
-                        <i class="fas fa-comment-dots text-indigo-500"></i> Image Emotion Chat
-                    </h2>
+                <div id="imageChatSection" class="hidden section-card p-6">
+                    <h2 class="text-2xl font-semibold mb-4 text-cyan-400">Visual Emotion Chat</h2>
                     <div id="imageChat" class="chat-container mb-4"></div>
                     <div class="flex">
-                        <input type="text" id="imageChatInput" class="input-field rounded-r-none" placeholder="Ask about your visual emotions...">
-                        <button id="imageChatSend" class="btn-primary rounded-l-none">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
+                        <input type="text" id="imageChatInput" class="space-input flex-1 rounded-l-lg rounded-r-none" placeholder="Type your message...">
+                        <button id="imageChatSend" class="btn-space px-4 py-2 rounded-r-lg rounded-l-none">Send</button>
                     </div>
                 </div>
                 
                 <!-- Audio Chat -->
-                <div id="audioChatSection" class="card p-6 hidden">
-                    <h2 class="section-title">
-                        <i class="fas fa-comment-dots text-green-500"></i> Audio Emotion Chat
-                    </h2>
+                <div id="audioChatSection" class="hidden section-card p-6">
+                    <h2 class="text-2xl font-semibold mb-4 text-purple-400">Audio Emotion Chat</h2>
                     <div id="audioChat" class="chat-container mb-4"></div>
                     <div class="flex">
-                        <input type="text" id="audioChatInput" class="input-field rounded-r-none" placeholder="Ask about your vocal emotions...">
-                        <button id="audioChatSend" class="btn-primary rounded-l-none">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
+                        <input type="text" id="audioChatInput" class="space-input flex-1 rounded-l-lg rounded-r-none" placeholder="Type your message...">
+                        <button id="audioChatSend" class="btn-space px-4 py-2 rounded-r-lg rounded-l-none">Send</button>
                     </div>
                 </div>
             </div>
-            
-            <div id="noChat" class="text-center py-10">
-                <i class="fas fa-comments text-5xl text-gray-300 mb-4"></i>
-                <h3 class="text-xl font-semibold text-gray-500">Chat Not Available</h3>
-                <p class="text-gray-500 mt-2">Analyze an image or audio file to start a conversation about emotions</p>
+        </div>
+    </section>
+    
+    <!-- System Architecture -->
+    <section class="py-20 parallax" style="background-image: url('https://cdn.pixabay.com/photo/2016/10/20/18/35/earth-1756274_1280.jpg');">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-12">System Architecture</h2>
+            <div class="flex justify-center mb-12">
+                <div class="orbit">
+                    <div class="satellite"></div>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="section-card p-4 text-center">
+                    <div class="text-4xl mb-2">🎙️</div>
+                    <h3 class="text-xl font-bold mb-2">Audio Input</h3>
+                    <p>Voice analysis for emotional state detection</p>
+                </div>
+                <div class="section-card p-4 text-center">
+                    <div class="text-4xl mb-2">🎥</div>
+                    <h3 class="text-xl font-bold mb-2">Visual Input</h3>
+                    <p>Facial expression and body language analysis</p>
+                </div>
+                <div class="section-card p-4 text-center">
+                    <div class="text-4xl mb-2">🤖</div>
+                    <h3 class="text-xl font-bold mb-2">AI Engine</h3>
+                    <p>Multimodal emotion recognition and response</p>
+                </div>
+                <div class="section-card p-4 text-center">
+                    <div class="text-4xl mb-2">📊</div>
+                    <h3 class="text-xl font-bold mb-2">Dashboard</h3>
+                    <p>Real-time monitoring and intervention alerts</p>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-12">Key Features</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="section-card p-6 text-center hover:glow transition-all duration-300">
+                    <div class="mission-badge mx-auto mb-4">
+                        <span class="text-3xl">🔍</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Multimodal AI</h3>
+                    <p>Combines visual, audio, and biometric data for accurate emotion detection</p>
+                </div>
+                <div class="section-card p-6 text-center hover:glow transition-all duration-300">
+                    <div class="mission-badge mx-auto mb-4">
+                        <span class="text-3xl">💬</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Adaptive Conversations</h3>
+                    <p>Personalized dialogue based on emotional state and mission context</p>
+                </div>
+                <div class="section-card p-6 text-center hover:glow transition-all duration-300">
+                    <div class="mission-badge mx-auto mb-4">
+                        <span class="text-3xl">📡</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Offline Deployment</h3>
+                    <p>Functions without Earth connection during deep space missions</p>
+                </div>
+                <div class="section-card p-6 text-center hover:glow transition-all duration-300">
+                    <div class="mission-badge mx-auto mb-4">
+                        <span class="text-3xl">⚠️</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Critical Alerts</h3>
+                    <p>Immediate notification system for psychological emergencies</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-12 border-t border-cyan-800">
+        <div class="container mx-auto px-4 text-center">
+            <h3 class="text-2xl font-bold mb-4">MAITRI</h3>
+            <p class="mb-6">Guiding Astronauts Beyond Earth</p>
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="#" class="text-2xl hover:text-cyan-400 transition-colors">🔗</a>
+                <a href="#" class="text-2xl hover:text-cyan-400 transition-colors">💼</a>
+                <a href="#" class="text-2xl hover:text-cyan-400 transition-colors">📧</a>
+            </div>
+            <p class="text-sm text-gray-400">© 2023 MAITRI - Space-Tech Emotional Support System</p>
+        </div>
+    </footer>
 
     <script>
-        // Tab navigation
-        document.getElementById('inputTab').addEventListener('click', () => {
-            document.getElementById('inputSection').classList.remove('hidden');
-            document.getElementById('resultsSection').classList.add('hidden');
-            document.getElementById('chatSection').classList.add('hidden');
+        // Create animated starfield
+        function createStarfield() {
+            const starfield = document.getElementById('starfield');
+            const starCount = 150;
             
-            document.getElementById('inputTab').classList.add('active');
-            document.getElementById('resultsTab').classList.remove('active');
-            document.getElementById('chatTab').classList.remove('active');
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // Random size between 1-3px
+                const size = Math.random() * 2 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                // Random position
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                
+                // Random animation delay
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                
+                starfield.appendChild(star);
+            }
+        }
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            createStarfield();
+            
+            // Add floating animation to section cards on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('floating');
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.section-card').forEach(card => {
+                observer.observe(card);
+            });
         });
         
-        document.getElementById('resultsTab').addEventListener('click', () => {
-            document.getElementById('inputSection').classList.add('hidden');
-            document.getElementById('resultsSection').classList.remove('hidden');
-            document.getElementById('chatSection').classList.add('hidden');
-            
-            document.getElementById('inputTab').classList.remove('active');
-            document.getElementById('resultsTab').classList.add('active');
-            document.getElementById('chatTab').classList.remove('active');
-        });
-        
-        document.getElementById('chatTab').addEventListener('click', () => {
-            document.getElementById('inputSection').classList.add('hidden');
-            document.getElementById('resultsSection').classList.add('hidden');
-            document.getElementById('chatSection').classList.remove('hidden');
-            
-            document.getElementById('inputTab').classList.remove('active');
-            document.getElementById('resultsTab').classList.remove('active');
-            document.getElementById('chatTab').classList.add('active');
-        });
-
-        // Original functionality (unchanged)
+        // Existing emotion analysis functionality (simplified for demo)
         let currentImageEmotion = null;
         let currentAudioEmotion = null;
 
-        // Form submission
         document.getElementById('emotionForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const formData = new FormData();
-            const imageInput = document.getElementById('imageInput');
-            const audioInput = document.getElementById('audioInput');
-            const webcam = document.getElementById('webcamButton').dataset.webcam === 'true';
-            const record = document.getElementById('recordButton').dataset.record === 'true';
-
-            if (imageInput.files[0]) {
-                formData.append('file', imageInput.files[0]);
-            }
-            if (audioInput.files[0]) {
-                formData.append('audio', audioInput.files[0]);
-            }
-            const url = webcam || record ? `/predict/final?${webcam ? 'webcam=true' : ''}${record ? '&record=true' : ''}` : '/predict/final';
-
-            try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    body: webcam || record ? null : formData
-                });
-                const data = await response.json();
-                displayResults(data);
+            
+            // Simulate API call with demo data
+            setTimeout(() => {
+                const demoData = {
+                    image_emotion: "Calm",
+                    image_static_response: "The analysis indicates a calm emotional state. This is optimal for mission tasks requiring focus.",
+                    image_chat_response: "I detect a calm emotional state. How can I assist you today?",
+                    audio_emotion: "Slightly Stressed",
+                    audio_static_response: "Vocal analysis suggests mild stress. Would you like to discuss what's on your mind?",
+                    audio_chat_response: "I notice some stress in your voice. Remember the breathing techniques we practiced?"
+                };
                 
-                // Switch to results tab after analysis
-                document.getElementById('resultsTab').click();
-            } catch (error) {
-                console.error('Error:', error);
-                document.getElementById('results').innerHTML = '<p class="text-red-500">Error analyzing emotions. Please try again.</p>';
-            }
+                displayResults(demoData);
+            }, 1000);
         });
 
-        // Webcam button toggle
-        document.getElementById('webcamButton').addEventListener('click', () => {
-            document.getElementById('webcamButton').dataset.webcam = 'true';
-            document.getElementById('imageInput').disabled = true;
-            document.getElementById('webcamButton').innerHTML = '<i class="fas fa-times"></i> Cancel Webcam';
-            document.getElementById('webcamButton').classList.replace('btn-outline', 'btn-secondary');
-            document.getElementById('webcamButton').addEventListener('click', cancelWebcam, { once: true });
-        });
-
-        function cancelWebcam() {
-            document.getElementById('webcamButton').dataset.webcam = 'false';
-            document.getElementById('imageInput').disabled = false;
-            document.getElementById('webcamButton').innerHTML = '<i class="fas fa-camera"></i> Use Webcam';
-            document.getElementById('webcamButton').classList.replace('btn-secondary', 'btn-outline');
-        }
-
-        // Record button toggle
-        document.getElementById('recordButton').addEventListener('click', () => {
-            document.getElementById('recordButton').dataset.record = 'true';
-            document.getElementById('audioInput').disabled = true;
-            document.getElementById('recordButton').innerHTML = '<i class="fas fa-times"></i> Cancel Recording';
-            document.getElementById('recordButton').classList.replace('btn-outline', 'btn-secondary');
-            document.getElementById('recordButton').addEventListener('click', cancelRecord, { once: true });
-        });
-
-        function cancelRecord() {
-            document.getElementById('recordButton').dataset.record = 'false';
-            document.getElementById('audioInput').disabled = false;
-            document.getElementById('recordButton').innerHTML = '<i class="fas fa-microphone-alt"></i> Record Audio';
-            document.getElementById('recordButton').classList.replace('btn-secondary', 'btn-outline');
-        }
-
-        // Display results
         function displayResults(data) {
             const resultsDiv = document.getElementById('results');
-            const noResultsDiv = document.getElementById('noResults');
             const imageResult = document.getElementById('imageResult');
             const audioResult = document.getElementById('audioResult');
-            const chatSections = document.getElementById('chatSection');
+            const chatSections = document.getElementById('chatSections');
             const imageChatSection = document.getElementById('imageChatSection');
             const audioChatSection = document.getElementById('audioChatSection');
-            const noChatDiv = document.getElementById('noChat');
             const imageChat = document.getElementById('imageChat');
             const audioChat = document.getElementById('audioChat');
 
             resultsDiv.classList.remove('hidden');
-            noResultsDiv.classList.add('hidden');
             chatSections.classList.remove('hidden');
             imageChat.innerHTML = '';
             audioChat.innerHTML = '';
@@ -594,18 +512,13 @@
             if (data.image_emotion) {
                 currentImageEmotion = data.image_emotion;
                 imageResult.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <span class="emotion-badge">
-                            <i class="fas fa-smile"></i> ${data.image_emotion}
-                        </span>
-                    </div>
-                    <p class="text-gray-700">${data.image_static_response}</p>
+                    <h3 class="text-lg font-medium text-cyan-400">Visual Emotion: ${data.image_emotion}</h3>
+                    <p>${data.image_static_response}</p>
                 `;
                 imageChatSection.classList.remove('hidden');
-                noChatDiv.classList.add('hidden');
                 appendChatMessage(imageChat, data.image_chat_response, 'bot');
             } else {
-                imageResult.innerHTML = '<p class="text-gray-500">No image emotion detected.</p>';
+                imageResult.innerHTML = '<p>No visual emotion detected.</p>';
                 imageChatSection.classList.add('hidden');
             }
 
@@ -613,28 +526,17 @@
             if (data.audio_emotion) {
                 currentAudioEmotion = data.audio_emotion;
                 audioResult.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <span class="emotion-badge">
-                            <i class="fas fa-volume-up"></i> ${data.audio_emotion}
-                        </span>
-                    </div>
-                    <p class="text-gray-700">${data.audio_static_response}</p>
+                    <h3 class="text-lg font-medium text-purple-400">Audio Emotion: ${data.audio_emotion}</h3>
+                    <p>${data.audio_static_response}</p>
                 `;
                 audioChatSection.classList.remove('hidden');
-                noChatDiv.classList.add('hidden');
                 appendChatMessage(audioChat, data.audio_chat_response, 'bot');
             } else {
-                audioResult.innerHTML = '<p class="text-gray-500">No audio emotion detected.</p>';
+                audioResult.innerHTML = '<p>No audio emotion detected.</p>';
                 audioChatSection.classList.add('hidden');
-            }
-            
-            // Show no chat message if both sections are hidden
-            if (imageChatSection.classList.contains('hidden') && audioChatSection.classList.contains('hidden')) {
-                noChatDiv.classList.remove('hidden');
             }
         }
 
-        // Append chat message
         function appendChatMessage(chatContainer, message, type) {
             const messageDiv = document.createElement('div');
             messageDiv.className = `chat-message ${type === 'user' ? 'user-message' : 'bot-message'}`;
@@ -643,25 +545,24 @@
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
-        // Send chat message
         async function sendChatMessage(emotion, message, chatContainer, type) {
             if (!message.trim()) return;
             appendChatMessage(chatContainer, message, 'user');
-            try {
-                const response = await fetch('/chatbot/converse', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ emotion, message })
-                });
-                const data = await response.json();
-                appendChatMessage(chatContainer, data.response, 'bot');
-            } catch (error) {
-                console.error('Error:', error);
-                appendChatMessage(chatContainer, 'Error: Could not get response. Try again.', 'bot');
-            }
+            
+            // Simulate API response
+            setTimeout(() => {
+                const responses = {
+                    "Calm": "Maintaining calm is excellent for mission focus. Is there anything specific you'd like to discuss?",
+                    "Slightly Stressed": "I notice some stress. Remember the mindfulness exercises we practiced? They might help right now.",
+                    "Happy": "It's great to detect positive emotions! Celebrating small victories is important in space missions.",
+                    "Neutral": "A neutral emotional state is perfectly normal. How are you finding the current mission phase?"
+                };
+                
+                const response = responses[emotion] || "I'm here to support you. Would you like to talk more about how you're feeling?";
+                appendChatMessage(chatContainer, response, 'bot');
+            }, 1000);
         }
 
-        // Image chat send
         document.getElementById('imageChatSend').addEventListener('click', () => {
             const input = document.getElementById('imageChatInput');
             const message = input.value;
@@ -671,7 +572,6 @@
             }
         });
 
-        // Audio chat send
         document.getElementById('audioChatSend').addEventListener('click', () => {
             const input = document.getElementById('audioChatInput');
             const message = input.value;
@@ -681,12 +581,21 @@
             }
         });
 
-        // Handle Enter key for chat inputs
         document.getElementById('imageChatInput').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') document.getElementById('imageChatSend').click();
         });
+        
         document.getElementById('audioChatInput').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') document.getElementById('audioChatSend').click();
+        });
+
+        // Webcam and record button functionality (placeholder)
+        document.getElementById('webcamButton').addEventListener('click', function() {
+            alert("Webcam functionality would be implemented here in a production environment");
+        });
+        
+        document.getElementById('recordButton').addEventListener('click', function() {
+            alert("Audio recording functionality would be implemented here in a production environment");
         });
     </script>
 </body>
