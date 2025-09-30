@@ -1,186 +1,693 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MAITRI — AI Companion in Space</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    body{
-      font-family:Inter,system-ui,sans-serif;
-      margin:0;
-      background:#ffffff;
-      color:#1a1a1a;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      overflow-x:hidden;
-    }
-    section{padding:56px 0}
-    .card{border:1px solid #e5e7eb;border-radius:12px;padding:20px;background:#fafafa;transition:transform .2s ease, box-shadow .2s ease;cursor:pointer}
-    .card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 6px 24px rgba(0,0,0,0.1)}
-    .btn{border-radius:8px;padding:12px 20px;font-weight:600;transition:background .2s ease, transform .2s ease}
-    .btn:hover{transform:translateY(-2px)}
-    .btn-primary{background:#2563eb;color:#fff}
-    .btn-primary:hover{background:#1d4ed8}
-    .btn-outline{border:1px solid #2563eb;color:#2563eb;background:#fff}
-    .btn-outline:hover{background:#f3f4f6}
-    footer{padding:28px 0;border-top:1px solid #e5e7eb;font-size:.9rem;color:#6b7280}
-    .icon{font-size:24px;color:#2563eb;margin-bottom:12px}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Emotion Companion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --secondary: #10b981;
+            --secondary-dark: #0d9c6a;
+            --accent: #f59e0b;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f0f4ff 0%, #f8fafc 100%);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .card:hover {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 24px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.3);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(to right, var(--secondary), var(--secondary-dark));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 24px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            padding: 10px 22px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .input-field {
+            border: 2px solid var(--gray-light);
+            border-radius: 10px;
+            padding: 12px 16px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        
+        .chat-container {
+            max-height: 300px;
+            overflow-y: auto;
+            border-radius: 12px;
+            padding: 16px;
+            background: #f8fafc;
+        }
+        
+        .chat-message {
+            margin: 12px 0;
+            padding: 12px 16px;
+            border-radius: 12px;
+            max-width: 80%;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .user-message {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+        
+        .bot-message {
+            background: white;
+            color: var(--dark);
+            margin-right: auto;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .emotion-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--light);
+            color: var(--dark);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            color: var(--primary);
+        }
+        
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .file-input-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 16px;
+            background: var(--light);
+            border: 2px dashed var(--gray-light);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .file-input-label:hover {
+            border-color: var(--primary);
+            background: rgba(79, 70, 229, 0.05);
+        }
+        
+        .file-input-label i {
+            font-size: 24px;
+            color: var(--primary);
+        }
+        
+        .tab-button {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-weight: 600;
+            color: var(--gray);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .tab-button.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .loading-dots {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 20px;
+        }
+        
+        .loading-dots div {
+            position: absolute;
+            top: 8px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--primary);
+            animation-timing-function: cubic-bezier(0, 1, 1, 0);
+        }
+        
+        .loading-dots div:nth-child(1) {
+            left: 8px;
+            animation: loading-dots1 0.6s infinite;
+        }
+        
+        .loading-dots div:nth-child(2) {
+            left: 8px;
+            animation: loading-dots2 0.6s infinite;
+        }
+        
+        .loading-dots div:nth-child(3) {
+            left: 32px;
+            animation: loading-dots2 0.6s infinite;
+        }
+        
+        .loading-dots div:nth-child(4) {
+            left: 56px;
+            animation: loading-dots3 0.6s infinite;
+        }
+        
+        @keyframes loading-dots1 {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes loading-dots3 {
+            0% { transform: scale(1); }
+            100% { transform: scale(0); }
+        }
+        
+        @keyframes loading-dots2 {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(24px, 0); }
+        }
+        
+        /* Scrollbar styling */
+        .chat-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .chat-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .chat-container::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+        
+        .chat-container::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+    </style>
 </head>
-<body>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="container mx-auto max-w-6xl">
+        <!-- Header -->
+        <div class="text-center mb-10">
+            <h1 class="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-3">AI Emotion Companion</h1>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">Understand and explore your emotions through AI-powered analysis of images and audio</p>
+        </div>
+        
+        <!-- Main Content Tabs -->
+        <div class="flex border-b border-gray-200 mb-8">
+            <button id="inputTab" class="tab-button active">
+                <i class="fas fa-upload mr-2"></i>Input Emotions
+            </button>
+            <button id="resultsTab" class="tab-button">
+                <i class="fas fa-chart-bar mr-2"></i>Analysis Results
+            </button>
+            <button id="chatTab" class="tab-button">
+                <i class="fas fa-comments mr-2"></i>Emotion Chat
+            </button>
+        </div>
+        
+        <!-- Input Form Section -->
+        <div id="inputSection" class="card p-8 mb-8">
+            <h2 class="section-title">
+                <i class="fas fa-cloud-upload-alt"></i>Upload or Capture Emotion
+            </h2>
+            
+            <form id="emotionForm" enctype="multipart/form-data" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Image Input -->
+                    <div class="card p-6">
+                        <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                            <i class="fas fa-image text-indigo-500"></i> Visual Emotion Analysis
+                        </h3>
+                        
+                        <div class="file-input-wrapper mb-4">
+                            <div class="file-input-label">
+                                <i class="fas fa-file-image"></i>
+                                <div>
+                                    <div class="font-medium">Upload an image</div>
+                                    <div class="text-sm text-gray-500">JPEG, PNG, or WebP format</div>
+                                </div>
+                            </div>
+                            <input type="file" id="imageInput" name="file" accept="image/*">
+                        </div>
+                        
+                        <div class="text-center text-gray-500 my-3">or</div>
+                        
+                        <button type="button" id="webcamButton" class="btn-outline w-full">
+                            <i class="fas fa-camera"></i> Use Webcam
+                        </button>
+                    </div>
+                    
+                    <!-- Audio Input -->
+                    <div class="card p-6">
+                        <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                            <i class="fas fa-microphone text-green-500"></i> Audio Emotion Analysis
+                        </h3>
+                        
+                        <div class="file-input-wrapper mb-4">
+                            <div class="file-input-label">
+                                <i class="fas fa-file-audio"></i>
+                                <div>
+                                    <div class="font-medium">Upload an audio file</div>
+                                    <div class="text-sm text-gray-500">MP3, WAV, or OGG format</div>
+                                </div>
+                            </div>
+                            <input type="file" id="audioInput" name="audio" accept="audio/*">
+                        </div>
+                        
+                        <div class="text-center text-gray-500 my-3">or</div>
+                        
+                        <button type="button" id="recordButton" class="btn-outline w-full">
+                            <i class="fas fa-microphone-alt"></i> Record Audio
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="flex justify-center pt-4">
+                    <button type="submit" class="btn-primary pulse">
+                        <i class="fas fa-brain"></i> Analyze Emotions
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Results Section -->
+        <div id="resultsSection" class="card p-8 mb-8 hidden">
+            <h2 class="section-title">
+                <i class="fas fa-chart-pie"></i> Emotion Analysis Results
+            </h2>
+            
+            <div id="results" class="hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Image Results -->
+                    <div id="imageResultContainer" class="card p-6">
+                        <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                            <i class="fas fa-image text-indigo-500"></i> Visual Emotion
+                        </h3>
+                        <div id="imageResult" class="space-y-4">
+                            <!-- Results will be inserted here -->
+                        </div>
+                    </div>
+                    
+                    <!-- Audio Results -->
+                    <div id="audioResultContainer" class="card p-6">
+                        <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                            <i class="fas fa-microphone text-green-500"></i> Audio Emotion
+                        </h3>
+                        <div id="audioResult" class="space-y-4">
+                            <!-- Results will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="noResults" class="text-center py-10">
+                <i class="fas fa-chart-bar text-5xl text-gray-300 mb-4"></i>
+                <h3 class="text-xl font-semibold text-gray-500">No Analysis Results Yet</h3>
+                <p class="text-gray-500 mt-2">Upload an image or audio file to see emotion analysis results</p>
+            </div>
+        </div>
+        
+        <!-- Chat Sections -->
+        <div id="chatSection" class="hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Image Chat -->
+                <div id="imageChatSection" class="card p-6 hidden">
+                    <h2 class="section-title">
+                        <i class="fas fa-comment-dots text-indigo-500"></i> Image Emotion Chat
+                    </h2>
+                    <div id="imageChat" class="chat-container mb-4"></div>
+                    <div class="flex">
+                        <input type="text" id="imageChatInput" class="input-field rounded-r-none" placeholder="Ask about your visual emotions...">
+                        <button id="imageChatSend" class="btn-primary rounded-l-none">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Audio Chat -->
+                <div id="audioChatSection" class="card p-6 hidden">
+                    <h2 class="section-title">
+                        <i class="fas fa-comment-dots text-green-500"></i> Audio Emotion Chat
+                    </h2>
+                    <div id="audioChat" class="chat-container mb-4"></div>
+                    <div class="flex">
+                        <input type="text" id="audioChatInput" class="input-field rounded-r-none" placeholder="Ask about your vocal emotions...">
+                        <button id="audioChatSend" class="btn-primary rounded-l-none">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="noChat" class="text-center py-10">
+                <i class="fas fa-comments text-5xl text-gray-300 mb-4"></i>
+                <h3 class="text-xl font-semibold text-gray-500">Chat Not Available</h3>
+                <p class="text-gray-500 mt-2">Analyze an image or audio file to start a conversation about emotions</p>
+            </div>
+        </div>
+    </div>
 
-  <!-- NAV -->
-  <nav class="container mx-auto px-6 py-6 flex items-center justify-between">
-    <div class="flex items-center gap-2">
-      <div class="text-xl font-bold text-blue-600">MAITRI</div>
-      <span class="text-sm text-gray-500">AI Companion in Space</span>
-    </div>
-    <div class="hidden md:flex gap-4 items-center text-sm text-gray-700">
-      <a href="#about" class="hover:text-blue-600">About</a>
-      <a href="#solution" class="hover:text-blue-600">Solution</a>
-      <a href="#architecture" class="hover:text-blue-600">System</a>
-      <a href="#demo" class="hover:text-blue-600">Demo</a>
-      <a href="#team" class="hover:text-blue-600">Team</a>
-      <button id="ctaTop" class="btn btn-primary ml-4">Watch Demo</button>
-    </div>
-  </nav>
+    <script>
+        // Tab navigation
+        document.getElementById('inputTab').addEventListener('click', () => {
+            document.getElementById('inputSection').classList.remove('hidden');
+            document.getElementById('resultsSection').classList.add('hidden');
+            document.getElementById('chatSection').classList.add('hidden');
+            
+            document.getElementById('inputTab').classList.add('active');
+            document.getElementById('resultsTab').classList.remove('active');
+            document.getElementById('chatTab').classList.remove('active');
+        });
+        
+        document.getElementById('resultsTab').addEventListener('click', () => {
+            document.getElementById('inputSection').classList.add('hidden');
+            document.getElementById('resultsSection').classList.remove('hidden');
+            document.getElementById('chatSection').classList.add('hidden');
+            
+            document.getElementById('inputTab').classList.remove('active');
+            document.getElementById('resultsTab').classList.add('active');
+            document.getElementById('chatTab').classList.remove('active');
+        });
+        
+        document.getElementById('chatTab').addEventListener('click', () => {
+            document.getElementById('inputSection').classList.add('hidden');
+            document.getElementById('resultsSection').classList.add('hidden');
+            document.getElementById('chatSection').classList.remove('hidden');
+            
+            document.getElementById('inputTab').classList.remove('active');
+            document.getElementById('resultsTab').classList.remove('active');
+            document.getElementById('chatTab').classList.add('active');
+        });
 
-  <!-- HERO -->
-  <header class="container mx-auto px-6 grid md:grid-cols-2 gap-8 items-center">
-    <div>
-      <h1 class="text-4xl md:text-5xl font-bold leading-tight">MAITRI — Your AI Companion in Space</h1>
-      <p class="mt-4 text-gray-600 max-w-xl">Ensuring astronauts' emotional & physical well-being on long-duration missions with multimodal AI, offline reliability, and adaptive companionship.</p>
-      <div class="mt-6 flex gap-3">
-        <button id="exploreBtn" class="btn btn-outline">Explore Solution</button>
-        <button id="watchBtn" class="btn btn-primary">Watch Demo</button>
-      </div>
-    </div>
-    <div class="rounded-lg border bg-gray-50 p-8 text-center">
-      <video src="https://via.placeholder.com/400x250.mp4?text=Demo+Video" controls class="mx-auto rounded-md shadow"></video><img src="https://via.placeholder.com/400x250.png?text=Demo+Illustration" alt="Demo Illustration" class="mx-auto rounded-md shadow"/>
-    </div>
-  </header>
+        // Original functionality (unchanged)
+        let currentImageEmotion = null;
+        let currentAudioEmotion = null;
 
-  <!-- ABOUT -->
-  <section id="about" class="container mx-auto px-6 grid md:grid-cols-2 gap-8 items-center">
-    <div class="card text-center">
-      <i class="fas fa-user-astronaut icon"></i>
-      <h3 class="text-2xl font-semibold">Problem — Isolation & Stress</h3>
-      <p class="mt-3 text-gray-600">Long missions increase psychological strain, fatigue, and social isolation. MAITRI provides continuous, adaptive emotional support and monitoring even when connectivity is limited.</p>
-    </div>
-    <div class="card text-center">
-      <i class="fas fa-robot icon"></i>
-      <h3 class="text-2xl font-semibold">MAITRI Interface</h3>
-      <p class="mt-3 text-gray-600">Multimodal sensing (audio, image, vitals), on-device AI, conversational agent, and alerts dashboard for crew and mission control.</p>
-      <div class="mt-4 grid grid-cols-2 gap-3 text-sm">
-        <div class="card"><i class="fas fa-smile icon"></i>Emotion Detection</div>
-        <div class="card"><i class="fas fa-brain icon"></i>Psychological Support</div>
-        <div class="card"><i class="fas fa-wifi-slash icon"></i>Offline AI</div>
-        <div class="card"><i class="fas fa-bell icon"></i>Critical Alerts</div>
-      </div>
-    </div>
-  </section>
+        // Form submission
+        document.getElementById('emotionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData();
+            const imageInput = document.getElementById('imageInput');
+            const audioInput = document.getElementById('audioInput');
+            const webcam = document.getElementById('webcamButton').dataset.webcam === 'true';
+            const record = document.getElementById('recordButton').dataset.record === 'true';
 
-  <!-- SOLUTION / ARCHITECTURE -->
-  <section id="solution" class="container mx-auto px-6">
-    <h2 class="text-3xl font-semibold mb-6 text-center">Proposed Solution</h2>
-    <div class="grid md:grid-cols-3 gap-4 text-center">
-      <div class="card"><i class="fas fa-eye icon"></i><h4 class="font-semibold">Emotion Detection</h4><p class="text-gray-600 text-sm mt-2">Computer vision + audio analysis to infer emotional state and sentiment trends.</p></div>
-      <div class="card"><i class="fas fa-heart icon"></i><h4 class="font-semibold">Psychological Support</h4><p class="text-gray-600 text-sm mt-2">Adaptive conversation flows, cognitive-behavioral micro-interventions, and calming exercises.</p></div>
-      <div class="card"><i class="fas fa-microchip icon"></i><h4 class="font-semibold">Offline Reliability</h4><p class="text-gray-600 text-sm mt-2">On-device models and sync strategies for intermittent connectivity.</p></div>
-    </div>
+            if (imageInput.files[0]) {
+                formData.append('file', imageInput.files[0]);
+            }
+            if (audioInput.files[0]) {
+                formData.append('audio', audioInput.files[0]);
+            }
+            const url = webcam || record ? `/predict/final?${webcam ? 'webcam=true' : ''}${record ? '&record=true' : ''}` : '/predict/final';
 
-    <div id="architecture" class="mt-8 card text-center">
-      <i class="fas fa-project-diagram icon"></i>
-      <h3 class="text-xl font-semibold">System Architecture</h3>
-      <p class="mt-4 text-gray-600">Diagram of inputs, AI engine, dashboard, and alerts here.</p>
-    </div>
-  </section>
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    body: webcam || record ? null : formData
+                });
+                const data = await response.json();
+                displayResults(data);
+                
+                // Switch to results tab after analysis
+                document.getElementById('resultsTab').click();
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('results').innerHTML = '<p class="text-red-500">Error analyzing emotions. Please try again.</p>';
+            }
+        });
 
-  <!-- FEATURES -->
-  <section class="container mx-auto px-6">
-    <h2 class="text-3xl font-semibold mb-6 text-center">Features</h2>
-    <div class="grid md:grid-cols-4 gap-4 text-center">
-      <div class="card"><i class="fas fa-brain icon"></i>Multimodal AI</div>
-      <div class="card"><i class="fas fa-comments icon"></i>Adaptive Conversations</div>
-      <div class="card"><i class="fas fa-satellite-dish icon"></i>On-device & Offline</div>
-      <div class="card"><i class="fas fa-exclamation-triangle icon"></i>Critical Alerting</div>
-    </div>
-  </section>
+        // Webcam button toggle
+        document.getElementById('webcamButton').addEventListener('click', () => {
+            document.getElementById('webcamButton').dataset.webcam = 'true';
+            document.getElementById('imageInput').disabled = true;
+            document.getElementById('webcamButton').innerHTML = '<i class="fas fa-times"></i> Cancel Webcam';
+            document.getElementById('webcamButton').classList.replace('btn-outline', 'btn-secondary');
+            document.getElementById('webcamButton').addEventListener('click', cancelWebcam, { once: true });
+        });
 
-  <!-- COMPARISON -->
-  <section class="container mx-auto px-6 mt-8">
-    <h2 class="text-3xl font-semibold mb-6 text-center">Comparison</h2>
-    <div class="grid md:grid-cols-2 gap-6">
-      <div class="card"><h4 class="font-semibold">Existing</h4><ul class="mt-3 text-gray-600 list-disc ml-5"><li>Limited offline support</li><li>Reactive alerts</li><li>Low personalization</li></ul></div>
-      <div class="card"><h4 class="font-semibold">MAITRI</h4><ul class="mt-3 text-gray-800 list-disc ml-5"><li>On-device adaptive AI</li><li>Proactive wellbeing interventions</li><li>High personalization</li></ul></div>
-    </div>
-  </section>
+        function cancelWebcam() {
+            document.getElementById('webcamButton').dataset.webcam = 'false';
+            document.getElementById('imageInput').disabled = false;
+            document.getElementById('webcamButton').innerHTML = '<i class="fas fa-camera"></i> Use Webcam';
+            document.getElementById('webcamButton').classList.replace('btn-secondary', 'btn-outline');
+        }
 
-  <!-- DEMO -->
-  <section id="demo" class="container mx-auto px-6 mt-8">
-    <h2 class="text-3xl font-semibold mb-6 text-center">Demo & Emotion Input</h2>
-    <div class="grid md:grid-cols-2 gap-6">
-      <div class="card">
-        <h3 class="font-semibold">Upload / Capture</h3>
-        <form id="emotionForm" class="space-y-4 mt-4">
-          <div>
-            <label class="text-sm text-gray-600">Image Input</label>
-            <input type="file" accept="image/*" class="w-full mt-2 border p-2 rounded-md" />
-          </div>
-          <div>
-            <label class="text-sm text-gray-600">Audio Input</label>
-            <input type="file" accept="audio/*" class="w-full mt-2 border p-2 rounded-md" />
-          </div>
-          <button type="submit" class="btn btn-primary mt-2">Analyze Emotions</button>
-        </form>
-      </div>
-      <div class="card text-center">
-        <img src="https://via.placeholder.com/350x200.png?text=Analysis+Results" alt="Results" class="mx-auto rounded-md"/>
-      </div>
-    </div>
-  </section>
+        // Record button toggle
+        document.getElementById('recordButton').addEventListener('click', () => {
+            document.getElementById('recordButton').dataset.record = 'true';
+            document.getElementById('audioInput').disabled = true;
+            document.getElementById('recordButton').innerHTML = '<i class="fas fa-times"></i> Cancel Recording';
+            document.getElementById('recordButton').classList.replace('btn-outline', 'btn-secondary');
+            document.getElementById('recordButton').addEventListener('click', cancelRecord, { once: true });
+        });
 
-  <!-- TEAM -->
-  <section id="team" class="container mx-auto px-6 mt-8">
-    <h2 class="text-3xl font-semibold mb-6 text-center">Team</h2>
-    <div class="grid md:grid-cols-4 gap-4 text-center">
-      <div class="card"><img src="https://via.placeholder.com/80" alt="Ayush Thakur" class="mx-auto rounded-full mb-3"/><div class="font-semibold">Ayush Thakur</div><div class="text-sm text-gray-500">Frontend & UX</div></div>
-      <div class="card"><img src="https://via.placeholder.com/80" alt="Research Lead" class="mx-auto rounded-full mb-3"/><div class="font-semibold">Research Lead</div><div class="text-sm text-gray-500">ML & Psychology</div></div>
-      <div class="card"><img src="https://via.placeholder.com/80" alt="Systems Eng" class="mx-auto rounded-full mb-3"/><div class="font-semibold">Systems Eng</div><div class="text-sm text-gray-500">On-device Systems</div></div>
-      <div class="card"><img src="https://via.placeholder.com/80" alt="Mission Ops" class="mx-auto rounded-full mb-3"/><div class="font-semibold">Mission Ops</div><div class="text-sm text-gray-500">Flight Ops</div></div>
-    </div>
-  </section>
+        function cancelRecord() {
+            document.getElementById('recordButton').dataset.record = 'false';
+            document.getElementById('audioInput').disabled = false;
+            document.getElementById('recordButton').innerHTML = '<i class="fas fa-microphone-alt"></i> Record Audio';
+            document.getElementById('recordButton').classList.replace('btn-secondary', 'btn-outline');
+        }
 
-  <!-- CONTACT -->
-  <section class="container mx-auto px-6 mt-8">
-    <h2 class="text-2xl font-semibold mb-4 text-center">Contact</h2>
-    <div class="card">
-      <form id="contactForm" class="grid md:grid-cols-2 gap-4">
-        <input placeholder="Name" class="border p-2 rounded-md" />
-        <input placeholder="Email" class="border p-2 rounded-md" />
-        <textarea placeholder="Message" class="border p-2 rounded-md md:col-span-2"></textarea>
-        <button class="btn btn-primary md:col-span-2">Launch Message 🚀</button>
-      </form>
-    </div>
-  </section>
+        // Display results
+        function displayResults(data) {
+            const resultsDiv = document.getElementById('results');
+            const noResultsDiv = document.getElementById('noResults');
+            const imageResult = document.getElementById('imageResult');
+            const audioResult = document.getElementById('audioResult');
+            const chatSections = document.getElementById('chatSection');
+            const imageChatSection = document.getElementById('imageChatSection');
+            const audioChatSection = document.getElementById('audioChatSection');
+            const noChatDiv = document.getElementById('noChat');
+            const imageChat = document.getElementById('imageChat');
+            const audioChat = document.getElementById('audioChat');
 
-  <footer class="container mx-auto px-6 mt-8">
-    <div class="flex items-center justify-between">
-      <div>MAITRI — Guiding Astronauts Beyond Earth</div>
-      <div class="flex gap-3 text-xl">
-        <a class="hover:text-blue-600"><i class="fab fa-linkedin"></i></a>
-        <a class="hover:text-blue-600"><i class="fab fa-github"></i></a>
-        <a class="hover:text-blue-600"><i class="fas fa-envelope"></i></a>
-      </div>
-    </div>
-  </footer>
+            resultsDiv.classList.remove('hidden');
+            noResultsDiv.classList.add('hidden');
+            chatSections.classList.remove('hidden');
+            imageChat.innerHTML = '';
+            audioChat.innerHTML = '';
 
-  <script>
-    gsap.from(".card", {opacity:0, y:20, duration:0.6, stagger:0.1});
-  </script>
+            // Image result
+            if (data.image_emotion) {
+                currentImageEmotion = data.image_emotion;
+                imageResult.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="emotion-badge">
+                            <i class="fas fa-smile"></i> ${data.image_emotion}
+                        </span>
+                    </div>
+                    <p class="text-gray-700">${data.image_static_response}</p>
+                `;
+                imageChatSection.classList.remove('hidden');
+                noChatDiv.classList.add('hidden');
+                appendChatMessage(imageChat, data.image_chat_response, 'bot');
+            } else {
+                imageResult.innerHTML = '<p class="text-gray-500">No image emotion detected.</p>';
+                imageChatSection.classList.add('hidden');
+            }
+
+            // Audio result
+            if (data.audio_emotion) {
+                currentAudioEmotion = data.audio_emotion;
+                audioResult.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="emotion-badge">
+                            <i class="fas fa-volume-up"></i> ${data.audio_emotion}
+                        </span>
+                    </div>
+                    <p class="text-gray-700">${data.audio_static_response}</p>
+                `;
+                audioChatSection.classList.remove('hidden');
+                noChatDiv.classList.add('hidden');
+                appendChatMessage(audioChat, data.audio_chat_response, 'bot');
+            } else {
+                audioResult.innerHTML = '<p class="text-gray-500">No audio emotion detected.</p>';
+                audioChatSection.classList.add('hidden');
+            }
+            
+            // Show no chat message if both sections are hidden
+            if (imageChatSection.classList.contains('hidden') && audioChatSection.classList.contains('hidden')) {
+                noChatDiv.classList.remove('hidden');
+            }
+        }
+
+        // Append chat message
+        function appendChatMessage(chatContainer, message, type) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${type === 'user' ? 'user-message' : 'bot-message'}`;
+            messageDiv.textContent = message;
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Send chat message
+        async function sendChatMessage(emotion, message, chatContainer, type) {
+            if (!message.trim()) return;
+            appendChatMessage(chatContainer, message, 'user');
+            try {
+                const response = await fetch('/chatbot/converse', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ emotion, message })
+                });
+                const data = await response.json();
+                appendChatMessage(chatContainer, data.response, 'bot');
+            } catch (error) {
+                console.error('Error:', error);
+                appendChatMessage(chatContainer, 'Error: Could not get response. Try again.', 'bot');
+            }
+        }
+
+        // Image chat send
+        document.getElementById('imageChatSend').addEventListener('click', () => {
+            const input = document.getElementById('imageChatInput');
+            const message = input.value;
+            if (currentImageEmotion) {
+                sendChatMessage(currentImageEmotion, message, document.getElementById('imageChat'), 'image');
+                input.value = '';
+            }
+        });
+
+        // Audio chat send
+        document.getElementById('audioChatSend').addEventListener('click', () => {
+            const input = document.getElementById('audioChatInput');
+            const message = input.value;
+            if (currentAudioEmotion) {
+                sendChatMessage(currentAudioEmotion, message, document.getElementById('audioChat'), 'audio');
+                input.value = '';
+            }
+        });
+
+        // Handle Enter key for chat inputs
+        document.getElementById('imageChatInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') document.getElementById('imageChatSend').click();
+        });
+        document.getElementById('audioChatInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') document.getElementById('audioChatSend').click();
+        });
+    </script>
 </body>
 </html>
