@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MAITRI — AI Companion in Space</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body{
+      font-family:Inter,system-ui,sans-serif;
+      margin:0;
+      background:#ffffff;
+      color:#1a1a1a;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+    }
+    section{padding:56px 0}
+    .card{border:1px solid #e5e7eb;border-radius:12px;padding:20px;background:#fafafa;transition:transform .2s ease, box-shadow .2s ease;cursor:pointer}
+    .card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 6px 24px rgba(0,0,0,0.1)}
+    .btn{border-radius:8px;padding:12px 20px;font-weight:600;transition:background .2s ease, transform .2s ease}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-primary{background:#2563eb;color:#fff}
+    .btn-primary:hover{background:#1d4ed8}
+    .btn-outline{border:1px solid #2563eb;color:#2563eb;background:#fff}
+    .btn-outline:hover{background:#f3f4f6}
+    footer{padding:28px 0;border-top:1px solid #e5e7eb;font-size:.9rem;color:#6b7280}
+    .icon{font-size:24px;color:#2563eb;margin-bottom:12px}
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="container mx-auto px-6 py-6 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <div class="text-xl font-bold text-blue-600">MAITRI</div>
+      <span class="text-sm text-gray-500">AI Companion in Space</span>
+    </div>
+    <div class="hidden md:flex gap-4 items-center text-sm text-gray-700">
+      <a href="#about" class="hover:text-blue-600">About</a>
+      <a href="#solution" class="hover:text-blue-600">Solution</a>
+      <a href="#architecture" class="hover:text-blue-600">System</a>
+      <a href="#demo" class="hover:text-blue-600">Demo</a>
+      <a href="#team" class="hover:text-blue-600">Team</a>
+      <button id="ctaTop" class="btn btn-primary ml-4">Watch Demo</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="container mx-auto px-6 grid md:grid-cols-2 gap-8 items-center">
+    <div>
+      <h1 class="text-4xl md:text-5xl font-bold leading-tight">MAITRI — Your AI Companion in Space</h1>
+      <p class="mt-4 text-gray-600 max-w-xl">Ensuring astronauts' emotional & physical well-being on long-duration missions with multimodal AI, offline reliability, and adaptive companionship.</p>
+      <div class="mt-6 flex gap-3">
+        <button id="exploreBtn" class="btn btn-outline">Explore Solution</button>
+        <button id="watchBtn" class="btn btn-primary">Watch Demo</button>
+      </div>
+    </div>
+    <div class="rounded-lg border bg-gray-50 p-8 text-center">
+      <video src="https://via.placeholder.com/400x250.mp4?text=Demo+Video" controls class="mx-auto rounded-md shadow"></video><img src="https://via.placeholder.com/400x250.png?text=Demo+Illustration" alt="Demo Illustration" class="mx-auto rounded-md shadow"/>
+    </div>
+  </header>
+
+  <!-- ABOUT -->
+  <section id="about" class="container mx-auto px-6 grid md:grid-cols-2 gap-8 items-center">
+    <div class="card text-center">
+      <i class="fas fa-user-astronaut icon"></i>
+      <h3 class="text-2xl font-semibold">Problem — Isolation & Stress</h3>
+      <p class="mt-3 text-gray-600">Long missions increase psychological strain, fatigue, and social isolation. MAITRI provides continuous, adaptive emotional support and monitoring even when connectivity is limited.</p>
+    </div>
+    <div class="card text-center">
+      <i class="fas fa-robot icon"></i>
+      <h3 class="text-2xl font-semibold">MAITRI Interface</h3>
+      <p class="mt-3 text-gray-600">Multimodal sensing (audio, image, vitals), on-device AI, conversational agent, and alerts dashboard for crew and mission control.</p>
+      <div class="mt-4 grid grid-cols-2 gap-3 text-sm">
+        <div class="card"><i class="fas fa-smile icon"></i>Emotion Detection</div>
+        <div class="card"><i class="fas fa-brain icon"></i>Psychological Support</div>
+        <div class="card"><i class="fas fa-wifi-slash icon"></i>Offline AI</div>
+        <div class="card"><i class="fas fa-bell icon"></i>Critical Alerts</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOLUTION / ARCHITECTURE -->
+  <section id="solution" class="container mx-auto px-6">
+    <h2 class="text-3xl font-semibold mb-6 text-center">Proposed Solution</h2>
+    <div class="grid md:grid-cols-3 gap-4 text-center">
+      <div class="card"><i class="fas fa-eye icon"></i><h4 class="font-semibold">Emotion Detection</h4><p class="text-gray-600 text-sm mt-2">Computer vision + audio analysis to infer emotional state and sentiment trends.</p></div>
+      <div class="card"><i class="fas fa-heart icon"></i><h4 class="font-semibold">Psychological Support</h4><p class="text-gray-600 text-sm mt-2">Adaptive conversation flows, cognitive-behavioral micro-interventions, and calming exercises.</p></div>
+      <div class="card"><i class="fas fa-microchip icon"></i><h4 class="font-semibold">Offline Reliability</h4><p class="text-gray-600 text-sm mt-2">On-device models and sync strategies for intermittent connectivity.</p></div>
+    </div>
+
+    <div id="architecture" class="mt-8 card text-center">
+      <i class="fas fa-project-diagram icon"></i>
+      <h3 class="text-xl font-semibold">System Architecture</h3>
+      <p class="mt-4 text-gray-600">Diagram of inputs, AI engine, dashboard, and alerts here.</p>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="container mx-auto px-6">
+    <h2 class="text-3xl font-semibold mb-6 text-center">Features</h2>
+    <div class="grid md:grid-cols-4 gap-4 text-center">
+      <div class="card"><i class="fas fa-brain icon"></i>Multimodal AI</div>
+      <div class="card"><i class="fas fa-comments icon"></i>Adaptive Conversations</div>
+      <div class="card"><i class="fas fa-satellite-dish icon"></i>On-device & Offline</div>
+      <div class="card"><i class="fas fa-exclamation-triangle icon"></i>Critical Alerting</div>
+    </div>
+  </section>
+
+  <!-- COMPARISON -->
+  <section class="container mx-auto px-6 mt-8">
+    <h2 class="text-3xl font-semibold mb-6 text-center">Comparison</h2>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="card"><h4 class="font-semibold">Existing</h4><ul class="mt-3 text-gray-600 list-disc ml-5"><li>Limited offline support</li><li>Reactive alerts</li><li>Low personalization</li></ul></div>
+      <div class="card"><h4 class="font-semibold">MAITRI</h4><ul class="mt-3 text-gray-800 list-disc ml-5"><li>On-device adaptive AI</li><li>Proactive wellbeing interventions</li><li>High personalization</li></ul></div>
+    </div>
+  </section>
+
+  <!-- DEMO -->
+  <section id="demo" class="container mx-auto px-6 mt-8">
+    <h2 class="text-3xl font-semibold mb-6 text-center">Demo & Emotion Input</h2>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="card">
+        <h3 class="font-semibold">Upload / Capture</h3>
+        <form id="emotionForm" class="space-y-4 mt-4">
+          <div>
+            <label class="text-sm text-gray-600">Image Input</label>
+            <input type="file" accept="image/*" class="w-full mt-2 border p-2 rounded-md" />
+          </div>
+          <div>
+            <label class="text-sm text-gray-600">Audio Input</label>
+            <input type="file" accept="audio/*" class="w-full mt-2 border p-2 rounded-md" />
+          </div>
+          <button type="submit" class="btn btn-primary mt-2">Analyze Emotions</button>
+        </form>
+      </div>
+      <div class="card text-center">
+        <img src="https://via.placeholder.com/350x200.png?text=Analysis+Results" alt="Results" class="mx-auto rounded-md"/>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section id="team" class="container mx-auto px-6 mt-8">
+    <h2 class="text-3xl font-semibold mb-6 text-center">Team</h2>
+    <div class="grid md:grid-cols-4 gap-4 text-center">
+      <div class="card"><img src="https://via.placeholder.com/80" alt="Ayush Thakur" class="mx-auto rounded-full mb-3"/><div class="font-semibold">Ayush Thakur</div><div class="text-sm text-gray-500">Frontend & UX</div></div>
+      <div class="card"><img src="https://via.placeholder.com/80" alt="Research Lead" class="mx-auto rounded-full mb-3"/><div class="font-semibold">Research Lead</div><div class="text-sm text-gray-500">ML & Psychology</div></div>
+      <div class="card"><img src="https://via.placeholder.com/80" alt="Systems Eng" class="mx-auto rounded-full mb-3"/><div class="font-semibold">Systems Eng</div><div class="text-sm text-gray-500">On-device Systems</div></div>
+      <div class="card"><img src="https://via.placeholder.com/80" alt="Mission Ops" class="mx-auto rounded-full mb-3"/><div class="font-semibold">Mission Ops</div><div class="text-sm text-gray-500">Flight Ops</div></div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="container mx-auto px-6 mt-8">
+    <h2 class="text-2xl font-semibold mb-4 text-center">Contact</h2>
+    <div class="card">
+      <form id="contactForm" class="grid md:grid-cols-2 gap-4">
+        <input placeholder="Name" class="border p-2 rounded-md" />
+        <input placeholder="Email" class="border p-2 rounded-md" />
+        <textarea placeholder="Message" class="border p-2 rounded-md md:col-span-2"></textarea>
+        <button class="btn btn-primary md:col-span-2">Launch Message 🚀</button>
+      </form>
+    </div>
+  </section>
+
+  <footer class="container mx-auto px-6 mt-8">
+    <div class="flex items-center justify-between">
+      <div>MAITRI — Guiding Astronauts Beyond Earth</div>
+      <div class="flex gap-3 text-xl">
+        <a class="hover:text-blue-600"><i class="fab fa-linkedin"></i></a>
+        <a class="hover:text-blue-600"><i class="fab fa-github"></i></a>
+        <a class="hover:text-blue-600"><i class="fas fa-envelope"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    gsap.from(".card", {opacity:0, y:20, duration:0.6, stagger:0.1});
+  </script>
+</body>
+</html>
